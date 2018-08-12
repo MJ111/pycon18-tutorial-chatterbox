@@ -15,7 +15,34 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 
 Sanic 서버와 클라이언트를 설치해서 채팅앱을 실행시켜봅니다.
 
-1. 어쩌고
+#### Server
+
+1. install python 3.6.1
+
+pyenv, virtualenv(optional) 이용하여 설치합니다.
+
+2. install python packages
+```
+$ pip install -r requirements
+```
+
+#### Client
+
+1. install npm(https://www.npmjs.com/get-npm)
+
+2. install node modules
+
+```
+$ cd client/
+$ npm install
+```
+
+자, 이제 서버와 클라이언트를 실행시켜봅니다.
+
+```
+$ python lesson01/server.py # run server
+$ npm start # run client
+```
 
 ### 2. 메세지 보내기
 
