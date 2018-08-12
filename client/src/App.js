@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {Launcher, ChatWindow} from './react-chat-window/src';
-import messageHistory from './messageHistory';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      messageList: messageHistory
+      messageList: []
     };
   }
 
@@ -14,18 +13,29 @@ class App extends Component {
     this.setState({
       messageList: [...this.state.messageList, message]
     })
+    this.socket.send(message.data[message.type]);
   }
 
-  _sendMessage(text) {
-    if (text.length > 0) {
+  componentDidMount() {
+    const url = "ws://localhost:8000/chat";
+    this.socket = new WebSocket(url);
+    this.socket.onopen = (event) => {
+        console.log(`Socket is connected to "${url}"`)
+    };
+    this.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data)
       this.setState({
-        messageList: [...this.state.messageList, {
-          author: 'them',
-          type: 'text',
-          data: { text }
-        }]
+          messageList: [...this.state.messageList, {
+            type: data.type,
+            author: data.author,
+            data: {text: data.data}
+          }]
       })
     }
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
   }
 
   render() {
@@ -35,7 +45,7 @@ class App extends Component {
           messageList={this.state.messageList}
           onUserInputSubmit={this._onMessageWasSent.bind(this)}
           agentProfile={{
-              teamName: 'react-live-chat',
+              teamName: 'chatterbox',
               imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
           }}
           isOpen

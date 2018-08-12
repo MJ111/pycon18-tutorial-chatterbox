@@ -1,11 +1,16 @@
 from sanic import Sanic
-from sanic.response import json
+import json
 
 app = Sanic()
 
-@app.route("/")
-async def test(request):
-    return json({"hello": "world"})
+@app.websocket('/chat')
+async def feed(request, ws):
+    while True:
+        data = await ws.recv()
+        print('Received: ' + data)
+        data = json.dumps({"type": "text", "author": "random", "data": 'hello!'})
+        print('Sending: ' + data)
+        await ws.send(data)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
