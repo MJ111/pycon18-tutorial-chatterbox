@@ -1,20 +1,48 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Launcher, ChatWindow} from './react-chat-window/src';
+import messageHistory from './messageHistory';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      messageList: messageHistory
+    };
+  }
+
+  _onMessageWasSent(message) {
+    this.setState({
+      messageList: [...this.state.messageList, message]
+    })
+  }
+
+  _sendMessage(text) {
+    if (text.length > 0) {
+      this.setState({
+        messageList: [...this.state.messageList, {
+          author: 'them',
+          type: 'text',
+          data: { text }
+        }]
+      })
+    }
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+    <div>
+        <ChatWindow
+          messageList={this.state.messageList}
+          onUserInputSubmit={this._onMessageWasSent.bind(this)}
+          agentProfile={{
+              teamName: 'react-live-chat',
+              imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+          }}
+          isOpen
+          onClose={() => {}}
+          showEmoji
+        />
+    </div>)
   }
 }
 
