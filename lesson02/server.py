@@ -1,18 +1,36 @@
 from sanic import Sanic
 import json
 
+from websockets import ConnectionClosed
+
 app = Sanic()
 
-@app.websocket('/chat')
+connections = set()
+
+@app.websocket('/feed')
 async def feed(request, ws):
+    connections.add(ws)
+    ip = request.ip
+    print(ip)
     while True:
-        data = await ws.recv()
+        try:
+            data = await ws.recv()
+        except ConnectionClosed:
+            connections.remove(ws)
+            break
+
         print('Received: ' + data)
         data = json.loads(data)
         data['author'] = 'them'
         data = json.dumps(data)
         print('Sending: ' + data)
-        await ws.send(data)
+
+        for connection in connections.copy():
+            if connection != ws:
+                try:
+                    await connection.send(data)
+                except ConnectionClosed:
+                    connections.remove(connection)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)

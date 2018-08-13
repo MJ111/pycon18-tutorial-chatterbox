@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const url = "ws://localhost:8000/chat";
+    const url = "ws://192.168.0.9:8000/feed";
     this.socket = new WebSocket(url);
     this.socket.onopen = (event) => {
         console.log(`Socket is connected to "${url}"`)
