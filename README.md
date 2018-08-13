@@ -44,7 +44,10 @@ $ python lesson01/server.py # run server
 $ npm start # run client
 ```
 
+메세지를 보내면 그대로 응답하는 에코 서버를 확인할 수 있습니다.
+
 ### 2. 메세지 보내기
+
 
 ### 3. 예약 메세지 보내기
 

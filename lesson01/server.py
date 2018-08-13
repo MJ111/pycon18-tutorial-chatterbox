@@ -8,7 +8,9 @@ async def feed(request, ws):
     while True:
         data = await ws.recv()
         print('Received: ' + data)
-        data = json.dumps({"type": "text", "author": "random", "data": 'hello!'})
+        data = json.loads(data)
+        data['author'] = 'them'
+        data = json.dumps(data)
         print('Sending: ' + data)
         await ws.send(data)
 

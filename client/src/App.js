@@ -13,7 +13,7 @@ class App extends Component {
     this.setState({
       messageList: [...this.state.messageList, message]
     })
-    this.socket.send(message.data[message.type]);
+    this.socket.send(JSON.stringify(message));
   }
 
   componentDidMount() {
@@ -25,11 +25,7 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
       this.setState({
-          messageList: [...this.state.messageList, {
-            type: data.type,
-            author: data.author,
-            data: {text: data.data}
-          }]
+          messageList: [...this.state.messageList, data]
       })
     }
   }
