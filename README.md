@@ -55,18 +55,11 @@ https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-w
 
 ### 2. 메세지 보내기
 
-에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 복잡도를 줄이기 위해 데이터베이스 레이어 없이 구현합니다.
-
-2.1 받은 메세지를 모든 유저들에게 보내는 일대 다수 채팅 구현
+에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다.
+복잡도를 줄이기 위해 데이터베이스 레이어 없이 구현합니다.
 
 참고 자료:
 https://github.com/r0fls/sanic-websockets/blob/master/examples/chat/chat.py
-
-2.2 IP를 이용해 유저 구분
-
-2.3 유저 입력으로 닉네임을 받아서 보여주기
-
-
 
 ### 3. 예약 메세지 보내기
 
