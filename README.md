@@ -13,9 +13,11 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 
 ### 1. 시작하기
 
+#### Setup
+
 Sanic 서버와 클라이언트를 설치해서 채팅앱을 실행시켜봅니다.
 
-#### Server
+##### Server
 
 1. install python 3.6.1
 
@@ -26,7 +28,7 @@ pyenv, virtualenv(optional) 이용하여 설치합니다.
 $ pip install -r requirements
 ```
 
-#### Client
+##### Client
 
 1. install npm(https://www.npmjs.com/get-npm)
 
@@ -44,10 +46,16 @@ $ python lesson01/server.py # run server
 $ npm start # run client
 ```
 
-메세지를 보내면 그대로 응답하는 에코 서버를 확인할 수 있습니다.
+서버에 curl 또는 Postman으로 hello world로 응답하는 걸 확인하실 수 있습니다.
+이제 이 서버를 websocket 에코 서버로 만들어봅시다. sanic의 websocket 이용해서 구현합니다.
+다음 링크를 참고하세요.
+
+http://sanic.readthedocs.io/en/latest/sanic/routing.html#websocket-routes
+https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-with-sanic/
 
 ### 2. 메세지 보내기
 
+에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다.
 
 ### 3. 예약 메세지 보내기
 
