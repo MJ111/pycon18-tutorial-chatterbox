@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SendIcon from './icons/SendIcon';
 import EmojiIcon from './icons/EmojiIcon';
-import EmojiPicker from './emoji-picker/EmojiPicker';
 
 
 class UserInput extends Component {
@@ -25,7 +24,7 @@ class UserInput extends Component {
     const text = this.userInput.textContent;
     if (text && text.length > 0) {
       this.props.onSubmit({
-        author: 'me',
+        author: this.props.myId,
         type: 'text',
         data: { text }
       });
@@ -35,7 +34,7 @@ class UserInput extends Component {
 
   _handleEmojiPicked(emoji) {
     this.props.onSubmit({
-      author: 'me',
+      author: this.props.myId,
       type: 'emoji',
       data: { emoji }
     });

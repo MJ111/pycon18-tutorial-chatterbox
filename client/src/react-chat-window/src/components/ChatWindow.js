@@ -6,10 +6,6 @@ import Header from './Header'
 
 
 class ChatWindow extends Component {
-    constructor(props) {
-      super(props);
-    }
-
     onUserInputSubmit(message) {
       this.props.onUserInputSubmit(message);
     }
@@ -34,8 +30,9 @@ class ChatWindow extends Component {
           <MessageList
             messages={messageList}
             imageUrl={this.props.agentProfile.imageUrl}
+            myId={this.props.myId}
           />
-          <UserInput showEmoji={this.props.showEmoji} onSubmit={this.onUserInputSubmit.bind(this)}/>
+          <UserInput showEmoji={this.props.showEmoji} onSubmit={this.onUserInputSubmit.bind(this)} myId={this.props.myId}/>
         </div>
       );
     }

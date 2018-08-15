@@ -55,6 +55,8 @@
 
 .sc-message--emoji {
   font-size: 40px;
+  padding: 5px 13px;
+  border-radius: 6px;
 }
 
 @media (max-width: 450px) {

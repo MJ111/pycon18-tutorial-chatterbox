@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import {Launcher, ChatWindow} from './react-chat-window/src';
+import {ChatWindow} from './react-chat-window/src';
+import NameForm from './NameForm';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      messageList: []
+      messageList: [],
+      myId: ''
     };
   }
 
@@ -24,9 +26,14 @@ class App extends Component {
     };
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      this.setState({
-          messageList: [...this.state.messageList, data]
-      })
+      if (data['id']) {
+        this.setState({myId: data['id']})
+        console.log(this.state.myId)
+      } else {
+          this.setState({
+              messageList: [...this.state.messageList, data]
+          })
+      }
     }
   }
 
@@ -44,6 +51,7 @@ class App extends Component {
               teamName: 'chatterbox',
               imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
           }}
+          myId={this.state.myId}
           isOpen
           onClose={() => {}}
           showEmoji
