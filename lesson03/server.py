@@ -1,8 +1,13 @@
+import uuid
+
 from sanic import Sanic
+import json
 
 from websockets import ConnectionClosed
 
 app = Sanic()
+
+UUID_NAMESPACE = uuid.uuid4()
 
 connections = set()
 
@@ -10,6 +15,8 @@ connections = set()
 @app.websocket('/feed')
 async def feed(request, ws):
     connections.add(ws)
+    unique_id = uuid.uuid3(UUID_NAMESPACE, request.ip).hex
+    await ws.send(json.dumps({"id": unique_id}))  # send unique id to client
     while True:
         try:
             data = await ws.recv()
@@ -18,6 +25,9 @@ async def feed(request, ws):
             break
 
         print('Received: ' + data)
+        data = json.loads(data)
+        data['author'] = unique_id
+        data = json.dumps(data)
         print('Sending: ' + data)
 
         for connection in connections.copy():

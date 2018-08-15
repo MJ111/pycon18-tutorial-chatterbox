@@ -61,7 +61,14 @@ https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-w
 참고 자료:
 https://github.com/r0fls/sanic-websockets/blob/master/examples/chat/chat.py
 
-### 3. 예약 메세지 보내기
+### 3. 유저 구별하기
+
+다른 유저가 보낸 메세지를 받았지만 누구에게서 메세지를 받은 건지 구별할 수가 없습니다. 서버에서 클라이언트로 메세지를 보낼 때 구별할 수 있는 아이디를 보내줘서 클라이언트가 메세지를 구별할 수 있게 해봅시다.
+
+참고 자료:
+https://docs.python.org/3/library/uuid.html
+
+### 4. 예약 메세지 보내기
 
 ### 4. 프로필 변경하기
 
