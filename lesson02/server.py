@@ -1,7 +1,5 @@
 from sanic import Sanic
 
-from websockets import ConnectionClosed
-
 app = Sanic()
 
 connections = set()
@@ -11,21 +9,10 @@ connections = set()
 async def feed(request, ws):
     connections.add(ws)
     while True:
-        try:
-            data = await ws.recv()
-        except ConnectionClosed:
-            connections.remove(ws)
-            break
-
+        data = await ws.recv()
         print('Received: ' + data)
         print('Sending: ' + data)
-
-        for connection in connections.copy():
-            if connection != ws:
-                try:
-                    await connection.send(data)
-                except ConnectionClosed:
-                    connections.remove(connection)
+        await ws.send(data)
 
 
 if __name__ == "__main__":
