@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {ChatWindow} from './react-chat-window/src';
-import NameForm from './NameForm';
 
 class App extends Component {
   constructor() {
@@ -12,10 +11,41 @@ class App extends Component {
   }
 
   _onMessageWasSent(message) {
-    this.setState({
-      messageList: [...this.state.messageList, message]
-    })
-    this.socket.send(JSON.stringify(message));
+    if (message.data.text.startsWith('/schedule ')) {
+        const allowedUnits = ['hours', 'minutes', 'seconds']
+        const messageRegex = /["'].*["']/;
+
+        let scheduleMsg;
+        const scheduleData = {}
+        let userScheduleInput;
+
+        const result = messageRegex.exec(message.data.text)
+        if (result) {
+            userScheduleInput = message.data.text.slice(0, result.index)
+            scheduleMsg = result[0]
+            scheduleMsg = scheduleMsg.slice(1,scheduleMsg.length-1)
+
+            if (userScheduleInput) {
+                userScheduleInput = userScheduleInput.split(' ')
+
+                for (let i=1; i<userScheduleInput.length; i++) {
+                    if (allowedUnits.includes(userScheduleInput[i])) {
+                        scheduleData[userScheduleInput[i]] = userScheduleInput[i+1]
+                    }
+                }
+            }
+        }
+
+        if (Object.keys(scheduleData).length && scheduleMsg) {
+            message.data = {'schedule': scheduleData, "text": scheduleMsg}
+            this.socket.send(JSON.stringify(message));
+        }
+    } else {
+        this.setState({
+          messageList: [...this.state.messageList, message]
+        })
+        this.socket.send(JSON.stringify(message));
+    }
   }
 
   componentDidMount() {

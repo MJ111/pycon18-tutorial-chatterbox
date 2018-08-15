@@ -70,6 +70,10 @@ https://docs.python.org/3/library/uuid.html
 
 ### 4. 예약 메세지 보내기
 
-### 4. 프로필 변경하기
+슬랙의 "/remind" 커맨드와 유사한 "/schedule" 커맨드를 만들어봅니다. 시분초와 메세지 입력을 받아 해당 시간이 지나면 메세지를 보냅니다.
+예시) /schedule hours 1 minutes 3 seconds 9 "how are you doing future?"
+
+참고 자료:
+https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 ### 5. 랜덤 채팅 구현하기 (Optional)
