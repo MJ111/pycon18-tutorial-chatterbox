@@ -111,3 +111,5 @@ https://docs.python.org/3/library/uuid.html
 https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 ### 5. 랜덤 채팅 구현하기 (Optional)
+
+랜덤 채팅 버튼을 누르면 1:1로 랜덤한 사람과 대화할 수 있습니다.

@@ -24,7 +24,16 @@
   border-radius: 5px;
 }
 
-.sc-header--team-name:hover {
+.sc-header--random {
+  align-self: center;
+  padding: 10px;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+.sc-header--random:hover {
   background: #4882ed;
 }
 

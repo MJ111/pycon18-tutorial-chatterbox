@@ -17,15 +17,14 @@ class ChatWindow extends Component {
     render() {
       let messageList = this.props.messageList || [];
       let classList = [
-        "sc-chat-window",
-        (this.props.isOpen ? "opened" : "closed")
+        "sc-chat-window opened",
       ];
       return (
         <div className={classList.join(' ')}>
           <Header
             teamName={this.props.agentProfile.teamName}
             imageUrl={this.props.agentProfile.imageUrl}
-            onClose={this.props.onClose}
+            joinRandom={this.props.joinRandom}
           />
           <MessageList
             messages={messageList}

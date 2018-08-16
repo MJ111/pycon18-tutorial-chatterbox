@@ -7,7 +7,8 @@ class Header extends Component {
     return (
       <div className="sc-header">
         <img className="sc-header--img" src={this.props.imageUrl} alt="" />
-        <div className="sc-header--team-name"> {this.props.teamName} </div>
+        <div className="sc-header--team-name" onClick={() => {window.location.href = '/'}}> {this.props.teamName} </div>
+        <div className="sc-header--random" onClick={this.props.joinRandom}>random</div>
       </div>
     );
   }

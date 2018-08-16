@@ -10,8 +10,15 @@ class App extends Component {
     };
   }
 
+  joinRandom() {
+    this.setState({
+        messageList: []
+    })
+    this.sendToSocket({channel: 'random'});
+  }
+
   _onMessageWasSent(message) {
-    if (message.data.text.startsWith('/schedule ')) {
+    if (message.data.text && message.data.text.startsWith('/schedule ')) {
         const allowedUnits = ['hours', 'minutes', 'seconds']
         const messageRegex = /( message .*)/;
 
@@ -38,7 +45,7 @@ class App extends Component {
 
         if (Object.keys(scheduleData).length && scheduleMsg) {
             message.data = {'schedule': scheduleData, "text": scheduleMsg}
-            this.socket.send(JSON.stringify(message));
+            this.sendToSocket(message);
         } else {
             alert("schedule command syntax is invalid. ex) /schedule seconds 5 message hello, world!")
         }
@@ -46,12 +53,16 @@ class App extends Component {
         this.setState({
           messageList: [...this.state.messageList, message]
         })
-        this.socket.send(JSON.stringify(message));
+        this.sendToSocket(message);
     }
   }
 
   componentDidMount() {
-    const url = "ws://192.168.0.9:8000/feed";
+    this.setupSocket();
+  }
+
+  setupSocket(channel) {
+    const url = "ws://192.168.0.9:8000";
     this.socket = new WebSocket(url);
     this.socket.onopen = (event) => {
         console.log(`Socket is connected to "${url}"`)
@@ -60,7 +71,7 @@ class App extends Component {
       const data = JSON.parse(event.data)
       if (data['id']) {
         this.setState({myId: data['id']})
-        console.log(this.state.myId)
+        console.log('my id: ', this.state.myId);
       } else {
           this.setState({
               messageList: [...this.state.messageList, data]
@@ -69,8 +80,16 @@ class App extends Component {
     }
   }
 
-  componentWillUnmount() {
+  sendToSocket(message) {
+    this.socket.send(JSON.stringify(message));
+  }
+
+  closeSocket() {
     this.socket.close();
+  }
+
+  componentWillUnmount() {
+    this.closeSocket();
   }
 
   render() {
@@ -79,13 +98,12 @@ class App extends Component {
         <ChatWindow
           messageList={this.state.messageList}
           onUserInputSubmit={this._onMessageWasSent.bind(this)}
+          joinRandom={this.joinRandom.bind(this)}
           agentProfile={{
               teamName: 'chatterbox',
               imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
           }}
           myId={this.state.myId}
-          isOpen
-          onClose={() => {}}
           showEmoji
         />
     </div>)
