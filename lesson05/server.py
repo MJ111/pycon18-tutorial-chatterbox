@@ -14,7 +14,7 @@ UUID_NAMESPACE = uuid.uuid4()
 connections = set()
 
 
-@app.websocket('/feed')
+@app.websocket('/')
 async def feed(request, ws):
     connections.add(ws)
     unique_id = uuid.uuid3(UUID_NAMESPACE, request.ip).hex

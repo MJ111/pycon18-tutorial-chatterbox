@@ -7,7 +7,7 @@ import uuid
 from sanic import log
 from websockets import ConnectionClosed
 
-from room import Room
+from server.room import Room
 
 logger = log.logger
 

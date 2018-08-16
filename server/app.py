@@ -1,5 +1,5 @@
 from sanic import Sanic
-from chatterbox import chatterbox
+from server.chatterbox import chatterbox
 
 app = Sanic()
 

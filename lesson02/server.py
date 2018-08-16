@@ -5,7 +5,7 @@ app = Sanic()
 connections = set()
 
 
-@app.websocket('/feed')
+@app.websocket('/')
 async def feed(request, ws):
     connections.add(ws)
     while True:

@@ -14,7 +14,7 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 
 각 디렉토리 안의 server.py 파일을 기반으로 구현을 시작하게 됩니다. 
 순서대로 진행하는 것을 권장하며 각 레슨의 솔루션은 다음번 레슨의 server.py에 구현되어 있습니다.
-최종 완성본은 루트 디렉토리의 server.py 입니다.
+최종 완성본은 server 디렉토리입니다.
 
 ### Client - Server 통신시 주의사항
 - `client/src/App.js:52:url`의 server host를 알맞게 변경해주셔야합니다.
@@ -113,3 +113,6 @@ https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 ### 5. 랜덤 채팅 구현하기 (Optional)
 
 랜덤 채팅 버튼을 누르면 1:1로 랜덤한 사람과 대화할 수 있습니다.
+
+참고 자료:
+https://github.com/Enforcer/simple-chat/blob/master/room.py
