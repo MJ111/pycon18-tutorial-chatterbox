@@ -31,6 +31,7 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 ```
 
 author; 보낸 이, type; text 혹은 emoji 인지 메세지 유형, data; 유저가 입력한 실제 메세지.
+
 좀 더 다양한 예시는 `client/src/messageHistory.js`를 참조해주세요.
  
 
@@ -95,10 +96,14 @@ https://docs.python.org/3/library/uuid.html
 ### 4. 예약 메세지 보내기
 
 슬랙의 "/remind" 커맨드와 유사한 "/schedule" 커맨드를 만들어봅니다. 시분초와 메세지 입력을 받아 해당 시간이 지나면 메세지를 보냅니다.
+다음과 같은 문법으로 이루어져 있습니다. 커맨드 뒤에 hours, minutes, seconds 를 중복해서 적을 수 있고 그 다음 `message`, 실제 메세지를 적습니다. `' '`로 구분자를 사용합니다.
+```
+/schedule ({timeunits} {timedelta number})+ message {real message}
+```
 
 예를 들어,
 ```
-/schedule hours 1 minutes 3 seconds 9 "how are you doing future?"
+/schedule hours 1 seconds 9 message how are you doing future?
 ```
 과 같이 유저가 입력을 하면 서버에서 이 커맨드를 인식하여 알맞게 실행해야 합니다.
 

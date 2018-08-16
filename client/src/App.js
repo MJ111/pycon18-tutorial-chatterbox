@@ -13,7 +13,7 @@ class App extends Component {
   _onMessageWasSent(message) {
     if (message.data.text.startsWith('/schedule ')) {
         const allowedUnits = ['hours', 'minutes', 'seconds']
-        const messageRegex = /["'].*["']/;
+        const messageRegex = /( message .*)/;
 
         let scheduleMsg;
         const scheduleData = {}
@@ -21,10 +21,10 @@ class App extends Component {
 
         const result = messageRegex.exec(message.data.text)
         if (result) {
-            userScheduleInput = message.data.text.slice(0, result.index)
             scheduleMsg = result[0]
-            scheduleMsg = scheduleMsg.slice(1,scheduleMsg.length-1)
+            scheduleMsg = scheduleMsg.slice(9,scheduleMsg.length)
 
+            userScheduleInput = message.data.text.slice(0, result.index)
             if (userScheduleInput) {
                 userScheduleInput = userScheduleInput.split(' ')
 
@@ -39,6 +39,8 @@ class App extends Component {
         if (Object.keys(scheduleData).length && scheduleMsg) {
             message.data = {'schedule': scheduleData, "text": scheduleMsg}
             this.socket.send(JSON.stringify(message));
+        } else {
+            alert("schedule command syntax is invalid. ex) /schedule seconds 5 message hello, world!")
         }
     } else {
         this.setState({

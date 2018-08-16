@@ -14,7 +14,8 @@ async def feed(request, ws):
         try:
             data = await ws.recv()
         except ConnectionClosed:
-            connections.remove(ws)
+            if ws in connections:
+                connections.remove(ws)
             break
 
         print('Received: ' + data)
@@ -25,7 +26,8 @@ async def feed(request, ws):
                 try:
                     await connection.send(data)
                 except ConnectionClosed:
-                    connections.remove(connection)
+                    if connection in connections:
+                        connections.remove(connection)
 
 
 if __name__ == "__main__":
