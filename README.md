@@ -116,3 +116,4 @@ https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 참고 자료:
 https://github.com/Enforcer/simple-chat/blob/master/room.py
+https://docs.python.org/3/library/threading.html#threading.Lock
