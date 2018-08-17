@@ -44,19 +44,23 @@ async def feed(request, ws):
                 timedelta['seconds'] = int(schedule_data['seconds'])
             delay = int(datetime.timedelta(**timedelta).total_seconds())
 
-            await asyncio.sleep(delay)
-            data = {**data, "data": {"text": message_data["text"]}}
-            await send(data, ws, schedule=True)
+            del data['data']['schedule']
+            asyncio.get_event_loop().create_task(schedule_send(data, ws, delay))
         else:
             await send(data, ws)
 
 
-async def send(data, ws, schedule=False):
+async def schedule_send(data, ws, delay):
+    await asyncio.sleep(delay)
+    await send(data, ws)
+
+
+async def send(data, ws):
     data = json.dumps(data)
     print('Sending: ' + data)
 
     for connection in connections.copy():
-        if connection != ws or schedule:
+        if connection != ws:
             try:
                 await connection.send(data)
             except ConnectionClosed:
