@@ -20,14 +20,15 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 
 #### Setup
 
-[cloud9](https://c9.io/)에서 계정을 만들어주세요. Cloud IDE를 이용해서 linux 환경에서 개발하려고 합니다.
-가입하신 후에 workspace를 만들어서 접속해주세요. 그리고 다음 커맨드들을 터미널에 입력해주세요.
-
 ```
+# ubuntu OS
 # install python 3.6
+$ sudo add-apt-repository ppa:jonathonf/python-3.6
+$ sudo apt-get update
 $ sudo apt-get install python3.6
-$ sudo rm /usr/bin/python
-$ sudo ln -s /usr/bin/python3.6 /usr/bin/python
+$ sudo rm /usr/bin/python3
+$ sudo ln -s python3.6 /usr/bin/python3
+# 참고 자료: http://ubuntuhandbook.org/index.php/2017/07/install-python-3-6-1-in-ubuntu-16-04-lts/
 
 # install node.js
 $ curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
@@ -37,28 +38,29 @@ $ sudo apt-get install -y nodejs
 $ git clone https://github.com/MJ111/pycon18-tutorial-chatterbox.git
 $ cd pycon18-tutorial-chatterbox/ # You're in!
 # install python package
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 개발을 위한 준비가 끝났습니다!
 
+간단한 http 서버를 sanic으로 구현하여 curl 또는 브라우저로 요청하여 서버가 응답하는 걸 확인해보세요.
 
+curl 예시:
+```
+$ curl http://localhost:8000
+```
+
+참고 자료:
+https://sanic.readthedocs.io/en/latest/sanic/getting_started.html
 
 ### 1. 시작하기
 
-설치한 Sanic 서버와 클라이언트로 채팅앱을 실행시켜봅니다.
+![websocket](https://hpbn.co/assets/diagrams/1a8db2948eb2aad0dd47470c6c011a42.svg) 
 
-서버 실행:
-```
-$ python lesson01/server.py
-```
-
-서버에 curl 또는 Postman으로 hello world로 응답하는 걸 확인하실 수 있습니다.
-
-이제 이 서버를 websocket 에코 서버로 만들어봅시다. sanic의 websocket 이용해서 구현합니다.
+이제 이 http 서버를 websocket 에코 서버로 만들어봅시다. sanic의 websocket 이용해서 구현합니다.
 websocket 에코 서버를 클라이언트와 붙여서 확인해야하기 때문에 클라이언트를 설치합니다.
 
-##### Client
+##### Setup Client 
 
 1. install packages
 
@@ -71,10 +73,9 @@ $ npm install
 
 ```
 $ npm start
-```
+``` 
 
-
-### Client - Server 통신시 주의사항
+3. Client - Server 통신시 주의사항
 - `client/src/App.js:52:url`의 server host를 알맞게 변경해주셔야합니다.
 
 - 웹 클라이언트에서 메세지를 입력하면 서버로 메세지를 가공하여 보냅니다. 이때 보내오는 JSON 데이터의 구조는 다음과 같습니다.
@@ -91,13 +92,18 @@ $ npm start
 author; 보낸 이, type; text 혹은 emoji 인지 메세지 유형, data; 유저가 입력한 실제 메세지.
 
 좀 더 다양한 예시는 `client/src/messageHistory.js`를 참조해주세요.
- 
+
+이제 `lesson01/server.py`와 클라이언트를 같이 실행해서 테스트를 해보세요.
 
 참고 자료:
 http://sanic.readthedocs.io/en/latest/sanic/routing.html#websocket-routes
 https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-with-sanic/
 
 ### 2. 메세지 보내기
+
+![socket](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/French-power-socket.jpg/1200px-French-power-socket.jpg)
+
+![socket_network](https://image.slidesharecdn.com/sockets-101218053457-phpapp02/95/network-sockets-3-638.jpg?cb=1426421035)
 
 에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다.
 복잡도를 줄이기 위해 데이터베이스 레이어 없이 구현합니다.
