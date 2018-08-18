@@ -81,6 +81,7 @@ author; 보낸 이, type; text 혹은 emoji 인지 메세지 유형, data; 유�
 
 참고 자료:
 http://sanic.readthedocs.io/en/latest/sanic/routing.html#websocket-routes
+
 https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-with-sanic/
 
 ### 2. 메세지 보내기
@@ -144,6 +145,7 @@ https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 참고 자료:
 https://github.com/Enforcer/simple-chat/blob/master/room.py
+
 https://docs.python.org/3/library/threading.html#threading.Lock
 
 
