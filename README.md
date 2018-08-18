@@ -21,6 +21,10 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 #### Setup
 
 개발을 시작하기 위해선 Python 3.6, Node.js/npm 이 깔려있어야합니다. 설치는 다른 블로그들을 참조해주세요.
+그리고 파이썬 패키지를 깔아줍시다. requirements.txt에 정의되어 있습니다.
+```
+$ pip install -r requirements.txt
+```
 
 설치가 완료되셨다면 간단한 http 서버를 sanic으로 구현하여 curl 또는 브라우저로 요청하여 서버가 응답하는 걸 확인해보세요.
 
