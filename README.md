@@ -4,6 +4,8 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 단계적으로 기능을 더하면서 좀더 쉽게 이해할 수 있게 구성했습니다.
 웹 클라이언트는 이미 완성되어 있어 서버 구현에만 집중할 수 있습니다.
 
+> 튜토리얼 진행시에는 sanic, async/await, asyncio, websocket에 관한 설명을 해드렸지만 이 문서에는 없기 때문에 그에 관한 지식이 없으시다면 처음 진입장벽이 있을 수 있습니다. 그러나 간단한 기능을 구현하는 것이고 차근차근 따라오시면서 쓰다보면 금방 이해하실 수 있을거라 생각합니다.
+
 ## Features
 
 - 일대 다수 채팅
@@ -46,7 +48,7 @@ https://sanic.readthedocs.io/en/latest/sanic/getting_started.html
 ![websocket](https://hpbn.co/assets/diagrams/1a8db2948eb2aad0dd47470c6c011a42.svg) 
 
 이제 이 http 서버를 websocket 에코 서버로 만들어봅시다. sanic의 websocket 이용해서 구현합니다.
-websocket 에코 서버를 클라이언트와 붙여서 확인해야하기 때문에 클라이언트를 설치합니다.
+websocket 에코 서버를 클라이언트와 붙여서 확인해야하기 때문에 그 전에 클라이언트를 설치합니다.
 
 ##### Setup Client 
 
@@ -63,7 +65,7 @@ $ npm install
 $ npm start
 ``` 
 
-3. Client - Server 통신시 주의사항
+3. Client - Server 통신을 위한 셋업 및 주의사항
 - `client/src/App.js:52:url`의 server host를 알맞게 변경해주셔야합니다.
 
 - 웹 클라이언트에서 메세지를 입력하면 서버로 메세지를 가공하여 보냅니다. 이때 보내오는 JSON 데이터의 구조는 다음과 같습니다.
@@ -92,8 +94,8 @@ https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-w
 
 ![socket_network](https://image.slidesharecdn.com/sockets-101218053457-phpapp02/95/network-sockets-3-638.jpg?cb=1426421035)
 
-에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다. 이것을 broadcast라고 합니다.
-복잡도를 줄이기 위해 데이터베이스 레이어 없이 구현합니다.
+에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다. 이를 broadcast라고 합니다.
+복잡도를 줄이기 위해 데이터베이스 레이어 없이, 보내는 메세지를 persistent하게 저장하지 않고 그냥 보내줍니다.
 
 참고 자료:
 https://github.com/r0fls/sanic-websockets/blob/master/examples/chat/chat.py
@@ -160,3 +162,8 @@ https://docs.python.org/3/library/threading.html#threading.Lock
 - 채팅방을 선택해서 들어갈 수 있게 하기
 - 프로필(이름, 사진, 등)을 만들어서 수정할 수 있게 하기
 - 데이터베이스 레이어 깔기. 현재는 메세지가 저장되고 있지 않습니다.
+
+
+제가 준비한 자료는 여기까지입니다. 질문이나 건의사항은 이슈로 남겨주시길 바랍니다.
+
+Author: @mj111
