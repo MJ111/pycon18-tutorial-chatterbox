@@ -20,30 +20,14 @@ PyconKR'18에서 진행하는 `chatterbox` 라는 간단한 채팅앱을 완성�
 
 #### Setup
 
+개발을 시작하기 위해선 Python 3.6, Node.js/npm 이 깔려있어야합니다. 설치는 다른 블로그들을 참조해주세요.
+
+설치가 완료되셨다면 간단한 http 서버를 sanic으로 구현하여 curl 또는 브라우저로 요청하여 서버가 응답하는 걸 확인해보세요.
+
+서버 실행:
 ```
-# ubuntu OS
-# install python 3.6
-$ sudo add-apt-repository ppa:jonathonf/python-3.6
-$ sudo apt-get update
-$ sudo apt-get install python3.6
-$ sudo rm /usr/bin/python3
-$ sudo ln -s python3.6 /usr/bin/python3
-# 참고 자료: http://ubuntuhandbook.org/index.php/2017/07/install-python-3-6-1-in-ubuntu-16-04-lts/
-
-# install node.js
-$ curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-$ sudo apt-get install -y nodejs
-
-# clone project
-$ git clone https://github.com/MJ111/pycon18-tutorial-chatterbox.git
-$ cd pycon18-tutorial-chatterbox/ # You're in!
-# install python package
-$ pip3 install -r requirements.txt
+$ python lesson00/server.py
 ```
-
-개발을 위한 준비가 끝났습니다!
-
-간단한 http 서버를 sanic으로 구현하여 curl 또는 브라우저로 요청하여 서버가 응답하는 걸 확인해보세요.
 
 curl 예시:
 ```
@@ -101,11 +85,9 @@ https://breadcrumbscollector.tech/dive-into-pythons-asyncio-part-4-simple-chat-w
 
 ### 2. 메세지 보내기
 
-![socket](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/French-power-socket.jpg/1200px-French-power-socket.jpg)
-
 ![socket_network](https://image.slidesharecdn.com/sockets-101218053457-phpapp02/95/network-sockets-3-638.jpg?cb=1426421035)
 
-에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다.
+에코 서버를 일대 다수 채팅을 할 수 있게 만들어봅시다. 받은 메세지를 접속해 있는 모든 유저들에게 보내줍니다. 이것을 broadcast라고 합니다.
 복잡도를 줄이기 위해 데이터베이스 레이어 없이 구현합니다.
 
 참고 자료:
@@ -114,7 +96,9 @@ https://github.com/r0fls/sanic-websockets/blob/master/examples/chat/chat.py
 ### 3. 유저 구별하기
 
 다른 유저가 보낸 메세지를 받았지만 누구에게서 메세지를 받은 건지 구별할 수가 없습니다. 서버에서 클라이언트로 메세지를 보낼 때 구별할 수 있는 아이디를 보내줘서 클라이언트가 메세지를 구별할 수 있게 해봅시다.
-클라이언트에서는 데이터의 `"author"` 값으로 메세지를 구별합니다.
+클라이언트에서는 받은 데이터의 `"author"` 값과 자신에게 발급된 `"id"`로 메세지를 구별하기때문에 서버에서 이 `"id"`와 `"author"` 값을 유니크한 값으로 보내줘야합니다.
+클라이언트의 id는 소켓 커넥션이 이루어졌을 때 서버에서 발급해줘야하고 {"id": "{uuid}"} 의 형태로 서버에서 보내줘야합니다.
+가장 간단하게 구현하기 위해 유저 아이피를 이용해서 각 유저의 유니크한 아이디를 발급합니다. 이것을 다른 유저들에게 메세지를 보낼때 `"author"` 값에 채워줍니다.
 
 참고 자료:
 https://docs.python.org/3/library/uuid.html
@@ -133,15 +117,40 @@ https://docs.python.org/3/library/uuid.html
 ```
 과 같이 유저가 입력을 하면 서버에서 이 커맨드를 인식하여 알맞게 실행해야 합니다.
 
+위 메세지를 클라이언트에서 입력하면 클라이언트에서 서버로 메세지를 파싱한다음 json string으로 보내주는 데, 형식은 다음과 같습니다:
+```
+{
+"data": {
+    "schedule": {
+        "hours": 1,
+        "seconds": 9
+    },
+    "text": "how are you doing future?"
+},
+"author": "{uuid}",
+"type": "text"
+}
+```
+여기서 data의 schedule 값을 이용해서 스케쥴링 하면 됩니다.
+
 참고 자료:
 https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 ### 5. 랜덤 채팅 구현하기 (Optional)
 
-랜덤 채팅 버튼을 누르면 1:1로 랜덤한 사람과 대화할 수 있습니다.
+랜덤 채팅 버튼을 누르면 1:1로 랜덤한 사람과 대화할 수 있습니다. 그러니까 가가라이브와 비슷하게 private한 1:1 방에 랜덤으로 들어가는 기능입니다.
 
 솔루션은 `server/` 디렉토리에 있습니다.
 
 참고 자료:
 https://github.com/Enforcer/simple-chat/blob/master/room.py
 https://docs.python.org/3/library/threading.html#threading.Lock
+
+
+### 6. You want more?
+
+확장할 수 있는 기능은 여러가지가 있습니다.
+- 회원가입 기능을 넣어서 유저 아이디로 유저 구분하기
+- 채팅방을 선택해서 들어갈 수 있게 하기
+- 프로필(이름, 사진, 등)을 만들어서 수정할 수 있게 하기
+- 데이터베이스 레이어 깔기. 현재는 메세지가 저장되고 있지 않습니다.
