@@ -140,6 +140,8 @@ https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep
 
 랜덤 채팅 버튼을 누르면 1:1로 랜덤한 사람과 대화할 수 있습니다.
 
+솔루션은 `server/` 디렉토리에 있습니다.
+
 참고 자료:
 https://github.com/Enforcer/simple-chat/blob/master/room.py
 https://docs.python.org/3/library/threading.html#threading.Lock
