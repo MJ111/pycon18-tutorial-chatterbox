@@ -167,3 +167,5 @@ https://docs.python.org/3/library/threading.html#threading.Lock
 제가 준비한 자료는 여기까지입니다. 질문이나 건의사항은 이슈로 남겨주시길 바랍니다.
 
 Author: @mj111
+
+Thanks to: @seongwoopark3, @nachwon
